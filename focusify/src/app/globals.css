@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 13, 13, 13;
+  --background-mid-rgb: 26, 26, 26;
+  --background-end-rgb: 35, 37, 38;
+  --primary-color: #0595c9;
+  --accent-color: #ff7b00;
+  --sidebar-bg: rgba(25, 25, 25, 0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--background-start-rgb)) 0%,
+    rgb(var(--background-mid-rgb)) 25%,
+    rgb(var(--background-end-rgb)) 50%,
+    rgb(var(--background-end-rgb)) 75%,
+    rgb(var(--background-start-rgb)) 100%
+  );
+  min-height: 100vh;
+  font-family: 'Kanit', sans-serif;
+}
+
+@layer components {
+  .navbar-link {
+    @apply text-white no-underline text-lg px-5 py-2.5 transition-colors hover:bg-[#333] hover:text-[#0595c9] rounded;
+  }
+
+  .search-bar {
+    @apply w-[360px] py-3 px-7 mr-5 border border-[#ddd] rounded-full text-base transition-shadow focus:outline-none focus:bg-[#333] focus:text-white focus:shadow-[0_0_16px_rgba(5,149,201,0.6)];
+  }
+
+  .submit-button {
+    @apply py-3 px-7 bg-[#0595c9] border-none rounded-full text-white text-center text-base cursor-pointer transition-all hover:bg-[#0477a3] hover:shadow-[0_0_12px_rgba(5,149,201,0.5)] disabled:opacity-70 disabled:cursor-not-allowed;
+  }
+  
+  .video-container {
+    @apply flex flex-col items-center mt-8;
+  }
+  
+  .video-frame {
+    @apply w-full max-w-[720px] h-[360px] mb-12 rounded-lg shadow-lg;
+  }
+
+  .sidebar {
+    @apply fixed top-0 right-[-320px] w-[320px] h-full bg-[var(--sidebar-bg)] text-white transition-all duration-300 ease-in-out shadow-lg z-20 overflow-y-auto;
+  }
+  
+  .sidebar.active {
+    @apply right-0;
+  }
+
+  .sidebar-toggle {
+    @apply fixed z-30 flex items-center justify-center bottom-8 right-8 w-16 h-16 rounded-full bg-[var(--accent-color)] text-white cursor-pointer shadow-lg transition-all hover:bg-[#e56e00] hover:shadow-xl;
+  }
+
+  .timer-container {
+    @apply p-6 flex flex-col items-center;
+  }
+
+  .timer-display {
+    @apply text-6xl font-bold my-8 font-mono;
+  }
+
+  .timer-buttons {
+    @apply flex flex-wrap justify-center gap-4;
+  }
+
+  .timer-btn {
+    @apply px-5 py-3 rounded-lg transition-all text-white font-medium;
+  }
+
+  .start-btn {
+    @apply bg-[var(--primary-color)] hover:bg-[#0477a3];
+  }
+
+  .pause-btn {
+    @apply bg-[var(--accent-color)] hover:bg-[#e56e00];
+  }
+
+  .reset-btn {
+    @apply bg-[#555] hover:bg-[#444];
+  }
+
+  .preset-btn {
+    @apply bg-[#333] text-white px-4 py-2 rounded-lg m-1 hover:bg-[#444] transition-all;
+  }
+}
