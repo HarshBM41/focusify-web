@@ -8,46 +8,45 @@ export default function YoutubeSearch() {
   const [videoResults, setVideoResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
-  const apiKey = process.env.API_KEY;
-  const baseSearchURL = "https://www.googleapis.com/youtube/v3/search?";
-  
-  const searchFromInput = async () => {
-    if (!searchInput.trim()) return;
+   
+  const searchFromInput = async (input) => {
+    if (!input || input.trim() === '') {
+      setError('Please enter search keywords');
+      return;
+    }
     
     setLoading(true);
-    setError('');
-    
-    const finalURL = `${baseSearchURL}key=${apiKey}&q=${encodeURIComponent(searchInput)}&type=video&part=snippet&maxResults=3`;
+    setError(null);
     
     try {
-      const response = await fetch(finalURL);
+      const API_KEY = process.env.NEXT_PUBLIC_YOUTUBE_API_KEY;
+      
+      if (!API_KEY) {
+        throw new Error('YouTube API key is not configured. Please check your environment variables.');
+      }
+      
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&q=${encodeURIComponent(input)}&type=video&part=snippet&maxResults=3`
+      );
       
       if (!response.ok) {
-        throw new Error("Please make sure the keywords are valid alphanumeric characters.");
+        throw new Error('Failed to fetch results from YouTube');
       }
       
       const data = await response.json();
       
-      if (!data.items || data.items.length === 0) {
-        setError('No results found. Try different keywords.');
-        setVideoResults([]);
-        return;
-      }
-      
-      const results = data.items.map(item => ({
+      const formattedResults = data.items.map(item => ({
         videoId: item.id.videoId,
         title: item.snippet.title,
         description: item.snippet.description,
         channelTitle: item.snippet.channelTitle,
-        thumbnailUrl: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default?.url,
         embedUrl: `https://www.youtube.com/embed/${item.id.videoId}`
       }));
       
-      setVideoResults(results);
+      setVideoResults(formattedResults);
     } catch (err) {
-      setError(err.message || 'An error occurred while searching');
-      setVideoResults([]);
+      setError(err.message);
+      console.error('Error searching YouTube:', err);
     } finally {
       setLoading(false);
     }
@@ -63,13 +62,13 @@ export default function YoutubeSearch() {
             placeholder="Enter title / keywords of your topic"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && searchFromInput()}
+            onKeyDown={(e) => e.key === 'Enter' && searchFromInput(searchInput)}
           />
           <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
         </div>
         <button 
           className="submit-button flex items-center justify-center gap-2"
-          onClick={searchFromInput}
+          onClick={() => searchFromInput(searchInput)}
           disabled={loading}
         >
           {loading ? (
