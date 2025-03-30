@@ -1,7 +1,7 @@
 # focusify-web
 
 ## Live Demo
-You can view the code and try out the currently developed features here: https://demo-ic0i3fqag-hbmehta41-gmailcoms-projects.vercel.app/
+You can view the code and try out the currently developed features here: [https://demo-ic0i3fqag-hbmehta41-gmailcoms-projects.vercel.app/](https://demo-nine-swart-97.vercel.app/)
 
 Search functionality implemented
 Sidebar Timer implemented
